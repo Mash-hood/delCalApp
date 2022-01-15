@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'constants.dart';
+import 'deliveryCalculator.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Delivery Fee App',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -20,7 +23,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Delivery Fee Calculator'),
     );
   }
 }
@@ -44,16 +47,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  double _delFee = 0;
+  int cartValue;
+  DateTime timeOfOrder;
+  int dist;
+  int numItem;
 
-  void _incrementCounter() {
+  void _calcFee() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      _delFee = deliveryFee(cartValue, dist, numItem, timeOfOrder);
     });
   }
 
@@ -74,38 +81,186 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            // Column is also a layout widget. It takes a list of children and
+            // arranges them vertically. By default, it sizes itself to fit its
+            // children horizontally, and tries to be as tall as its parent.
+            //
+            // Invoke "debug painting" (press "p" in the console, choose the
+            // "Toggle Debug Paint" action from the Flutter Inspector in Android
+            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+            // to see the wireframe for each widget.
+            //
+            // Column has various properties to control how it sizes itself and
+            // how it positions its children. Here we use mainAxisAlignment to
+            // center the children vertically; the main axis here is the vertical
+            // axis because Columns are vertical (the cross axis would be
+            // horizontal).
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Cart Value  ',
+                    style: kTextsStyle,
+                  ),
+                  SizedBox(
+                    width: 150,
+                    height: 40,
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                      decoration: kCartValueDecoration,
+                      onChanged: (value) {
+                        cartValue = int.parse(value);
+                      },
+                    ),
+                  ),
+                  Text(
+                    ' €',
+                    style: kTextsStyle,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 14.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Delivery Distance  ',
+                    style: kTextsStyle,
+                  ),
+                  SizedBox(
+                    width: 150,
+                    height: 40,
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                      decoration: kDistanceDecoration,
+                      onChanged: (value) {
+                        dist = int.parse(value);
+                      },
+                    ),
+                  ),
+                  Text(
+                    ' m',
+                    style: kTextsStyle,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 14.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Amount of Items  ',
+                    style: kTextsStyle,
+                  ),
+                  SizedBox(
+                    width: 150,
+                    height: 40,
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                      decoration: kItemsDecoration,
+                      onChanged: (value) {
+                        numItem = int.parse(value);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 14.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Time  ',
+                    style: kTextsStyle,
+                  ),
+                  SizedBox(
+                    width: 200,
+                    height: 40,
+                    child: TextField(
+                      keyboardType: TextInputType.datetime,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                      decoration: kTimeDecoration,
+                      onChanged: (value) {
+                        timeOfOrder = DateTime.parse(value);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 28.0,
+              ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    FloatingActionButton.extended(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      onPressed: _calcFee,
+                      tooltip: 'Calculate delivery fee',
+                      label: const Text('Calculate Delivery Price'),
+                      extendedTextStyle: kTextsStyle,
+                      backgroundColor: Colors.blue,
+                    ),
+                  ]),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Delivery price: ',
+                    style: kTextsStyle,
+                  ),
+                  Text(
+                    ' $_delFee',
+                    style: kTextsStyle,
+                  ),
+                  Text(
+                    '  €',
+                    style: kTextsStyle,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

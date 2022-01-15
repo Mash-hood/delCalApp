@@ -1,16 +1,14 @@
 # try1
 
-A new Flutter application.
+A Dart console app and a quick-and-dirty Flutter demo of it
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This is a Delivery Fee calculator based on four
+inputs; value of the cart, delivery distance,
+number of items and the delivery DateTime
 
-A few resources to get you started if this is your first Flutter project:
+## How to run
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- For the Flutter demo; build and run the project normally
+- For the Dart console version; Run "dart run delCalApp.dart" from the terminal
