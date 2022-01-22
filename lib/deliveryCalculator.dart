@@ -1,75 +1,60 @@
 import 'dart:math';
 import 'constants.dart';
 
-enum DeliveryFeeType { none, normal }
-
-// function for the determination of DeliveryFee case
-int getDeliveryFeeType(int value) {
-  int tmp;
-  if (value >= kNoneDeliveryFeeLimit) {
-    tmp = 0;
-  } else {
-    tmp = 1;
-  }
-  return tmp;
-}
-
-// function for calculating normal  delivery fee case
-double calcFee(int value, int dist, int itemsNum, DateTime dateOfPurchase) {
-  // constants and variables definition
-  double tmpFee = 0.0;
-  int tmpFeeDist = 0;
-  double tmpFeeItem = 0.0;
-  int tmpFeeValue = 0;
-
-  // calculation of delivery fee based on distance
+// function for the calculation of delivery fee based on distance
+int calcDistFee(int dist) {
+  int distFee = 0;
   if (dist <= kBaseDistance) {
-    tmpFeeDist = kBaseDistanceCharge;
+    distFee = kBaseDistanceCharge;
   } else if (dist > kBaseDistance) {
-    tmpFeeDist =
+    distFee =
         kBaseDistanceCharge + ((dist - kBaseDistance) / kExtraDistance).ceil();
   }
-
-  // calculation of surcharges based on the number of items
-  if (itemsNum <= kBaseItem) {
-    tmpFeeItem = 0.0;
-  } else if (itemsNum > kBaseItem) {
-    tmpFeeItem = (itemsNum - kBaseItem) * 0.5;
-  }
-
-  // calculation of surcharges based on the value of cart
-  if (value <= kNormalDeliveryFeeLimit) {
-    tmpFeeValue = (kNormalDeliveryFeeLimit - value);
-  }
-
-  // summing of surcharges to deliveryFee charge
-  tmpFee = tmpFeeDist + tmpFeeItem + tmpFeeValue;
-
-  // adjusting the delivery fee for the rush hour
-  if ((dateOfPurchase.weekday == DateTime.friday) &&
-      (15 <= dateOfPurchase.hour) &&
-      (dateOfPurchase.hour <= 19)) {
-    tmpFee = 1.1 * tmpFee;
-  }
-  return tmpFee;
+  return distFee;
 }
 
-// function for calculating Delivery Fee based
+// function for the calculation of surcharges based on the number of items
+double calcItemSurcharge(int itemsNum) {
+  double itemSurcharge = 0.0;
+  if (itemsNum <= kBaseItem) {
+    itemSurcharge = 0.0;
+  } else if (itemsNum > kBaseItem) {
+    itemSurcharge = (itemsNum - kBaseItem) * 0.5;
+  }
+  return itemSurcharge;
+}
+
+// function for calculating surcharges based on the value of cart
+int calcValueSurcharge(int value) {
+  int valueSurcharge = 0;
+  if (value <= kNormalDeliveryFeeLimit) {
+    valueSurcharge = (kNormalDeliveryFeeLimit - value);
+  }
+  return valueSurcharge;
+}
+
+// function for calculating Delivery Fee; surcharges inclusive
 double deliveryFee(int cartValue, int deliveryDistance, int numberOfItems,
     DateTime timeOfOrder) {
-  // temporary variables definition
-  double tmpDeliveryFee;
+  double deliveryFee;
 
-  switch (DeliveryFeeType.values[getDeliveryFeeType(cartValue)]) {
-    case DeliveryFeeType.none:
-      tmpDeliveryFee = 0.0;
-      break;
-    case DeliveryFeeType.normal:
-      continue normalCase;
-    normalCase:
-    default: // Fall through from case normal
-      tmpDeliveryFee =
-          calcFee(cartValue, deliveryDistance, numberOfItems, timeOfOrder);
+  // Delivery fee calculation
+  if (cartValue >= kNoneDeliveryFeeLimit) {
+    return deliveryFee = 0; // cartValue is greater than 100 €
+  } else {
+    // calculate delivery fee, normally, otherwise
+    deliveryFee = calcDistFee(deliveryDistance) +
+        calcItemSurcharge(numberOfItems) +
+        calcValueSurcharge(cartValue);
   }
-  return min(kMaxDeliveryFee, tmpDeliveryFee);
+
+  // adjusting the delivery fee for the rush hour
+  if ((timeOfOrder.weekday == DateTime.friday) &&
+      (15 <= timeOfOrder.hour) &&
+      (timeOfOrder.hour <= 19)) {
+    deliveryFee = 1.1 * deliveryFee;
+  }
+
+  // finally, checking that delivery fee is not above the maximum value
+  return min(kMaxDeliveryFee, deliveryFee);
 }
