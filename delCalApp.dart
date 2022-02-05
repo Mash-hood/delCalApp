@@ -11,7 +11,7 @@ void main() {
   print("Enter the amount of items");
   int n3 = int.parse(stdin.readLineSync());
 
-  print("Enter delivery date and time in the format YYYYMMDD HHMMSS");
+  print("Enter delivery date and time in the format YYYY-MM-DD HH:MM:SS");
   DateTime n4 = DateTime.parse(stdin.readLineSync());
 
   // Calculate delivery fee

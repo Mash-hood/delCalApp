@@ -8,6 +8,9 @@ const int kBaseItem = 4;
 const int kNoneDeliveryFeeLimit = 100;
 const int kNormalDeliveryFeeLimit = 10;
 const double kMaxDeliveryFee = 15.0;
+const int rushHourStart = 15;
+const int rushHourEnd = 19;
+const double rushHourGain = 1.1;
 
 // function for the calculation of delivery fee based on distance
 int calcDistFee(int dist) {
@@ -58,9 +61,9 @@ double deliveryFee(int cartValue, int deliveryDistance, int numberOfItems,
 
   // adjusting the delivery fee for the rush hour
   if ((timeOfOrder.weekday == DateTime.friday) &&
-      (15 <= timeOfOrder.hour) &&
-      (timeOfOrder.hour <= 19)) {
-    deliveryFee = 1.1 * deliveryFee;
+      (rushHourStart <= timeOfOrder.hour) &&
+      (timeOfOrder.hour <= rushHourEnd)) {
+    deliveryFee = rushHourGain * deliveryFee;
   }
 
   // finally, checking that delivery fee is not above the maximum value
