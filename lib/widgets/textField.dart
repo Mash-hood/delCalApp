@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+// This is for constructing the TextFields; cartValue, deliveryDistance and Amount of items
+
 class TextFieldWidget extends StatelessWidget {
   TextFieldWidget({@required this.label, @required this.cont});
 
   final String label;
-  final cont;
+  final TextEditingController cont;
 
   @override
   Widget build(BuildContext context) {

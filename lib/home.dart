@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:deliveryFeeCalculator/widgets/textField.dart';
 import 'package:deliveryFeeCalculator/widgets/textField2.dart';
 
+// The home page; a column with 7 row widgets as children
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
 
@@ -15,6 +16,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // declaration of the variables
   String _delFee = "0.0";
   int cartValue;
   DateTime timeOfOrder;
@@ -24,6 +26,7 @@ class _HomeState extends State<Home> {
   String _time; //  = "15:00"
   DateTime tm; //  = DateTime.now()
 
+  // Initialization of the controller for Textfields values handling
   final controllerValue = TextEditingController();
   final controllerDist = TextEditingController();
   final controllerItem = TextEditingController();
@@ -41,6 +44,7 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
+  // the build method for composing the page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -192,8 +196,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Divider myDivider() => Divider(color: Colors.purple, thickness: 1.0);
-
+  // the function for checking input and calculating the delivery fee
   void _calcFee() {
     setState(() {
       if ((controllerValue.text.isEmpty) ||
@@ -217,6 +220,10 @@ class _HomeState extends State<Home> {
     });
   }
 
+  // divider widget, for common editing point
+  Divider myDivider() => Divider(color: Colors.purple, thickness: 1.0);
+
+  // function for showing and picking date
   void pickingDate() {
     showDatePicker(
       context: context,
@@ -231,6 +238,7 @@ class _HomeState extends State<Home> {
     });
   }
 
+  // function for showing and picking time
   void pickingTime() {
     showTimePicker(
       context: context,

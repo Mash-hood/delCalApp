@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const kTextsStyle = TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold);
 const kPriceTextsStyle = TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
 
-// constants and variables definition
+// constants used in the delivery fee calculation
 const int kBaseDistance = 1000;
 const int kExtraDistance = 500;
 const int kBaseDistanceCharge = 2;
