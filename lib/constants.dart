@@ -1,20 +1,7 @@
 import 'package:flutter/material.dart';
 
-const Color kTextFieldColor = Color(0xFFBBDEFB);
-const kTextsStyle = TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold);
-const kPriceTextsStyle = TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold);
-
-const kTimeDecoration = InputDecoration(
-  hintText: 'yyyy-mm-dd hh:mm:ss',
-  hintStyle: TextStyle(
-    color: Colors.black54,
-  ),
-  border: OutlineInputBorder(
-    borderRadius: BorderRadius.all(
-      Radius.circular(10.0),
-    ),
-  ),
-);
+const kTextsStyle = TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold);
+const kPriceTextsStyle = TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
 
 // constants and variables definition
 const int kBaseDistance = 1000;

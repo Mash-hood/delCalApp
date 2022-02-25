@@ -1,4 +1,4 @@
-name: try1
+name: deliveryFeeCalculator
 description: A new Flutter application.
 
 # The following defines the version and build number for your application.
@@ -27,6 +27,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  intl: ^0.17.0
 
 
 # For information on the generic Dart part of this file, see the

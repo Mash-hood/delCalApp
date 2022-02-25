@@ -1,6 +1,4 @@
 import 'dart:math';
-import 'package:flutter/cupertino.dart';
-
 import 'constants.dart';
 
 // function for the calculation of delivery fee based on distance
